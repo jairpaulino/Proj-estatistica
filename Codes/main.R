@@ -13,6 +13,10 @@
 
 # Pacotes ----
 #install.packages("devtools")
+library(dplyr)
+library(rstatix)
+library(corrplot)
+
 library(chisq.posthoc.test)
 #devtools::install_github("rfsaldanha/microdatasus")
 
@@ -26,72 +30,85 @@ library(microdatasus)
 #                       information_system = "SINASC")
 # SIM-DO - Óbitos
 
-dados <- fetch_datasus(year_start = 2019, #month_start = 1, 
+dados <- fetch_datasus(year_start = 2010, #month_start = 1, 
                        year_end = 2019, #month_end = 2,
                        uf = "PE", 
                        information_system = "SINASC")
 
 dados <- process_sinasc(dados) #View(dados)
+glimpse(dados)
 
-# Consultas ----
+plot(dados$CODOCUPMAE)
+
+# Qnt. de cons. PN vs Ocorr. anom. Cong.  ----
 a = dados$CONSULTAS
+b = dados$IDANOMAL; plot(a); plot(b)
+tb = table(a, b); tb = t(tb)
+chi = chisq.test(tb); chi 
 
-# Consultas vs Estado Civil
-b = dados$ESTCIVMAE
-plot(a); plot(b)
+name = "NumConsPN_OcorAnomCong"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
 
-tb = table(a, b); tb
-chisq.test(tb)
+# Analise post-hoc para o teste chi^2
 postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-View(postHoc)
+#View(postHoc)
 
-chisq.test(tb)$stdres
-s = 0.05
-sAdj = s/(nrow(tb)*ncol(tb)); sAdj
-qnorm(sAdj/2)
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
 
-# Consultas vs Esc. de mãe
-b = dados$ESCMAE
-plot(a); plot(b)
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1200, height = 800, quality = 100, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
 
-tb = table(a, b); tb
-chisq.test(tb)
+# Qnt. de cons. PN vs Est. civ. mae  ----
+a = dados$CONSULTAS
+b = dados$ESTCIVMAE; plot(a); plot(b)
+tb = table(a, b); tb = t(tb); tb
+chi = chisq.test(tb); chi 
+
+# Salva os resultados
+name = "NumConsPN_EstCivMae"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
 postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-View(postHoc)
+#View(postHoc)
 
-# Consultas vs Raca/cor
-b = dados$RACACOR
-plot(a); plot(b)
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
 
-tb = table(a, b); tb
-chisq.test(tb)
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1250, height = 1100, quality = 100, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+        tl.col = "black", tl.srt = 0)
+#dev.off()
+
+# Qnt. de cons. PN vs Esc. mae  ----
+a = dados$CONSULTAS
+b = dados$ESCMAE; plot(a); plot(b)
+tb = table(a, b); tb = t(tb); tb
+chi = chisq.test(tb); chi 
+
+name = "NumConsPN_EscolMae"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
 postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-View(postHoc)
+#View(postHoc)
 
-#KOTELCHUCK
-View(dados)
-# Consultas vs Local de nascimento
-b = dados$LOCNASC
-plot(a); plot(b)
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
 
-tb = table(a, b); tb
-chisq.test(tb)
-postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-View(postHoc)
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 800, quality = 75, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
 
-# Estado civil ----
-a = dados$ESTCIVMAE
 
-# Estado civil vs Escolaridade da mae
-b = dados$ESCMAE
-plot(a); plot(b)
 
-tb = table(a, b); tb
-chisq.test(tb)
-postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-View(postHoc)
-
-chisq.test(tb)$stdres
-s = 0.05
-sAdj = s/(nrow(tb)*ncol(tb)); sAdj
-qnorm(sAdj/2)
