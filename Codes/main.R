@@ -90,7 +90,7 @@ corrplot(chi$stdres, is.cor = FALSE,
 # Qnt. de cons. PN vs Esc. mae  ----
 a = dados$CONSULTAS
 b = dados$ESCMAE; plot(a); plot(b)
-tb = table(a, b); tb = t(tb); tb
+tb = table(a, b); #tb = t(tb); tb
 chi = chisq.test(tb); chi 
 
 name = "NumConsPN_EscolMae"
@@ -112,3 +112,75 @@ corrplot(chi$stdres, is.cor = FALSE,
 
 
 
+
+
+# Qnt. de cons. PN vs Raxa/cor mae  ----
+a = dados$CONSULTAS
+b = dados$RACACORMAE; plot(a); plot(b)
+tb = table(a, b); tb; #tb = t(tb); tb
+tb = tb[,c(-1)]
+chi = chisq.test(tb); chi 
+
+name = "NumConsPN_RacaCorMae"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 1000, quality = 75, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+
+
+
+
+
+# Esc. mae vs Tipo de parto  ----
+a = dados$ESCMAE
+b = dados$PARTO; plot(a); plot(b)
+tb = table(a, b); tb; tb = t(tb); tb
+tb = tb[,c(-1)]
+chi = chisq.test(tb); chi 
+
+name = "EscMae_TipoParto"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 1000, quality = 75, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+# Idade mae vs Ocorr. anom. Cong  ----
+a = dados$IDADEMAE
+b = as.numeric(dados$IDANOMAL);  #1 - Não; 2 - Sim
+matriz = data.frame(a = a, b = b)
+matriz = na.omit(matriz)
+str(matriz)
+
+cor.test(matriz$a, matriz$b) 
+plot(matriz$b[1:10000]~matriz$a[1:10000])
+
+# Qnt. sem.gest. vs Ocorr. anom. Cong  ----
+a = dados$SEMAGESTAC 
+b = as.numeric(dados$IDANOMAL); #1 - Não; 2 - Sim
+matriz = data.frame(a = a, b = b)
+matriz = na.omit(matriz)
+str(matriz)
+
+cor.test(matriz$a, matriz$b) 
+plot(matriz$b[1:10000]~matriz$a[1:10000])
