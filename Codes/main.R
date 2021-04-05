@@ -175,6 +175,12 @@ str(matriz)
 cor.test(matriz$a, matriz$b) 
 plot(matriz$b[1:10000]~matriz$a[1:10000])
 
+name = "IdadeMae_OcorrAnomCong"
+sink(paste("Results/", name, '.txt', sep=""))
+cor.test
+sink()
+
+
 # Qnt. sem.gest. vs Ocorr. anom. Cong  ----
 a = dados$SEMAGESTAC 
 b = as.numeric(dados$IDANOMAL); #1 - Não; 2 - Sim
@@ -182,5 +188,10 @@ matriz = data.frame(a = a, b = b)
 matriz = na.omit(matriz)
 str(matriz)
 
-cor.test(matriz$a, matriz$b) 
+cor.test = cor.test(matriz$a, matriz$b); cor.test
 plot(matriz$b[1:10000]~matriz$a[1:10000])
+
+name = "QntSemGest_OcorrAnomCong"
+sink(paste("Results/", name, '.txt', sep=""))
+cor.test
+sink()
