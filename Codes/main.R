@@ -40,85 +40,11 @@ glimpse(dados)
 
 plot(dados$CODOCUPMAE)
 
-# Qnt. de cons. PN vs Ocorr. anom. Cong.  ----
-a = dados$CONSULTAS
-b = dados$IDANOMAL; plot(a); plot(b)
-tb = table(a, b); tb = t(tb)
-chi = chisq.test(tb); chi 
-
-name = "NumConsPN_OcorAnomCong"
-write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
-
-# Analise post-hoc para o teste chi^2
-postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-#View(postHoc)
-
-# Calcula o V de Cramer
-cramer_v(tb); chi[2]
-
-# Exibe a analise dos residuos
-#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1200, height = 800, quality = 100, res = 150)
-corrplot(chi$stdres, is.cor = FALSE,
-         method = "color",
-         tl.col = "black", tl.srt = 0)
-#dev.off()
-
-# Qnt. de cons. PN vs Est. civ. mae  ----
-a = dados$CONSULTAS
-b = dados$ESTCIVMAE; plot(a); plot(b)
-tb = table(a, b); tb = t(tb); tb
-chi = chisq.test(tb); chi 
-
-# Salva os resultados
-name = "NumConsPN_EstCivMae"
-write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
-
-# Analise post-hoc para o teste chi^2
-postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-#View(postHoc)
-
-# Calcula o V de Cramer
-cramer_v(tb); chi[2]
-
-# Exibe a analise dos residuos
-#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1250, height = 1100, quality = 100, res = 150)
-corrplot(chi$stdres, is.cor = FALSE,
-         method = "color",
-        tl.col = "black", tl.srt = 0)
-#dev.off()
-
-# Qnt. de cons. PN vs Esc. mae  ----
-a = dados$CONSULTAS
-b = dados$ESCMAE; plot(a); plot(b)
-tb = table(a, b); #tb = t(tb); tb
-chi = chisq.test(tb); chi 
-
-name = "NumConsPN_EscolMae"
-write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
-
-# Analise post-hoc para o teste chi^2
-postHoc = chisq.posthoc.test(tb, method = "bonferroni")
-#View(postHoc)
-
-# Calcula o V de Cramer
-cramer_v(tb); chi[2]
-
-# Exibe a analise dos residuos
-#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 800, quality = 75, res = 150)
-corrplot(chi$stdres, is.cor = FALSE,
-         method = "color",
-         tl.col = "black", tl.srt = 0)
-#dev.off()
-
-
-
-
-
 # Qnt. de cons. PN vs Raxa/cor mae  ----
 a = dados$CONSULTAS
 b = dados$RACACORMAE; plot(a); plot(b)
-tb = table(a, b); tb; #tb = t(tb); tb
-tb = tb[,c(-1)]
+tb = table(a, b) #tb = t(tb); tb
+tb = tb[,c(-1)]; tb
 chi = chisq.test(tb); chi 
 
 name = "NumConsPN_RacaCorMae"
@@ -142,11 +68,88 @@ corrplot(chi$stdres, is.cor = FALSE,
 
 
 
+
+# Qnt. de cons. PN vs Esc. mae  ----
+a = dados$CONSULTAS
+b = dados$ESCMAE; plot(a); plot(b)
+tb = table(a, b); tb = t(tb); tb
+tb = tb[c(-1),]; tb
+chi = chisq.test(tb); chi 
+
+name = "NumConsPN_EscolMae"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 1000, quality = 75, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+# Qnt. de cons. PN vs Est. civ. mae  ----
+a = dados$CONSULTAS
+b = dados$ESTCIVMAE; plot(a); plot(b)
+tb = table(a, b); tb = t(tb); tb
+chi = chisq.test(tb); chi 
+
+# Salva os resultados
+name = "NumConsPN_EstCivMae"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1250, height = 1100, quality = 100, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+
+
+# Qnt. de cons. PN vs Ocorr. anom. Cong.  ----
+a = dados$CONSULTAS
+b = dados$IDANOMAL; plot(a); plot(b)
+tb = table(a, b); tb = t(tb)
+chi = chisq.test(tb); chi 
+
+name = "NumConsPN_OcorAnomCong"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1200, height = 800, quality = 100, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+
+
+
+plot(dados$IDADEMAE ~ dados$IDANOMAL )
+
+
 # Esc. mae vs Tipo de parto  ----
 a = dados$ESCMAE
 b = dados$PARTO; plot(a); plot(b)
 tb = table(a, b); tb; tb = t(tb); tb
-tb = tb[,c(-1)]
+tb = tb[,c(-1)]; tb
 chi = chisq.test(tb); chi 
 
 name = "EscMae_TipoParto"
@@ -165,6 +168,7 @@ corrplot(chi$stdres, is.cor = FALSE,
          method = "color",
          tl.col = "black", tl.srt = 0)
 #dev.off()
+
 # Idade mae vs Ocorr. anom. Cong  ----
 a = dados$IDADEMAE
 b = as.numeric(dados$IDANOMAL);  #1 - Não; 2 - Sim
@@ -181,17 +185,83 @@ cor.test
 sink()
 
 
-# Qnt. sem.gest. vs Ocorr. anom. Cong  ----
-a = dados$SEMAGESTAC 
-b = as.numeric(dados$IDANOMAL); #1 - Não; 2 - Sim
-matriz = data.frame(a = a, b = b)
-matriz = na.omit(matriz)
-str(matriz)
+## TipoGest vs AnomCong ----
+a = dados$GRAVIDEZ
+b = dados$IDANOMAL; plot(a); plot(b)
+tb = table(a, b); tb; tb = t(tb); tb
+chi = chisq.test(tb); chi 
 
-cor.test = cor.test(matriz$a, matriz$b); cor.test
-plot(matriz$b[1:10000]~matriz$a[1:10000])
+name = "TipoGest_AnomCong"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
 
-name = "QntSemGest_OcorrAnomCong"
-sink(paste("Results/", name, '.txt', sep=""))
-cor.test
-sink()
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 1000, quality = 75, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color",
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+
+
+
+## Quant Semana Gest vs Ocorr. Anom. Cong ----
+a = dados$GESTACAO
+b = dados$IDANOMAL; plot(a); plot(b)
+tb = table(a, b); tb; tb = t(tb); tb
+colnames(tb) = c('22-27', '28-31', '32-36', '37-41', '42+', '-22')
+chi = chisq.test(tb); chi 
+name = "QntSemGest_AnomCong"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 1000, quality = 75, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color", 
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+
+## Idade da mãe vs Ocorr. Anom. Cong ----
+
+
+dados$IDADEMAEFAIXA[dados$IDADEMAE <= 19] <- 'Adolescente (até 19)'
+dados$IDADEMAEFAIXA[dados$IDADEMAE>= 20 & dados$IDADEMAE<= 34] <- 'Adulta (20 a 34)'
+dados$IDADEMAEFAIXA[dados$IDADEMAE >= 35] <- 'Tardia (35 ou mais)'
+dados$IDADEMAEFAIXA <- as.factor(dados$IDADEMAEFAIXA)
+
+a = dados$IDADEMAEFAIXA
+b = dados$IDANOMAL; plot(a); plot(b)
+tb = table(a, b);# tb; tb = t(tb); tb
+chi = chisq.test(tb); chi 
+name = "IdadeMae_AnomCong"
+write.csv2(tb, file = paste("Results/", name, '.csv', sep=""))
+
+# Analise post-hoc para o teste chi^2
+postHoc = chisq.posthoc.test(tb, method = "bonferroni")
+#View(postHoc)
+
+# Calcula o V de Cramer
+cramer_v(tb); chi[2]
+
+# Exibe a analise dos residuos
+#jpeg(filename = paste("Results/", name, '.jpeg', sep=""), width = 1600, height = 1300, quality = 75, res = 150)
+corrplot(chi$stdres, is.cor = FALSE,
+         method = "color", 
+         tl.col = "black", tl.srt = 0)
+#dev.off()
+
+
+
+
